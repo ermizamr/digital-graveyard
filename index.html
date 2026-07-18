@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Digital Graveyard — A serene, beautiful memorial space for those we've lost. Honor memories in an eternal digital sanctuary.">
+    <title>Digital Graveyard — Eternal Memories</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ═══════════════ NAVIGATION ═══════════════ -->
+    <nav id="main-nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 2C8 2 5 5 5 9c0 2 1 3.5 2 4.5V22h10v-8.5c1-1 2-2.5 2-4.5 0-4-3-7-7-7z"/>
+                    <path d="M9 22h6" stroke-linecap="round"/>
+                    <path d="M12 6v6M9 9h6" stroke-linecap="round" opacity="0.6"/>
+                </svg>
+                <span>Digital Graveyard</span>
+            </a>
+            <div class="nav-links">
+                <a href="#featured" class="nav-link">Featured</a>
+                <a href="#memorials" class="nav-link">Memorials</a>
+                <a href="#about" class="nav-link">About</a>
+                <div class="nav-actions">
+                    <button id="nav-bookmarks-btn" class="nav-icon-btn" title="Saved memorials">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+                        </svg>
+                        <span class="bookmark-badge" id="bookmark-badge">0</span>
+                    </button>
+                    <button id="btn-create-memorial" class="nav-cta">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Create Memorial
+                    </button>
+                </div>
+            </div>
+            <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ═══════════════ HERO ═══════════════ -->
+    <header id="hero">
+        <div class="hero-content">
+            <p class="hero-tagline">An Eternal Sanctuary</p>
+            <h1 class="hero-title">Where Memories<br><span class="hero-title-accent">Live Forever</span></h1>
+            <p class="hero-subtitle">A serene digital space to honor, remember, and celebrate the lives of those who have touched our hearts.</p>
+            <div class="hero-actions">
+                <a href="#memorials" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    Explore Memorials
+                </a>
+                <button class="btn btn-secondary" id="hero-create-btn">Light a Candle</button>
+            </div>
+            <div class="hero-meta">
+                <div class="hero-live-counter">
+                    <span class="live-dot"></span>
+                    <span id="live-count">47</span> people remembering right now
+                </div>
+                <p class="hero-trust">Trusted by families in 52 countries</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══════════════ STATS BAR ═══════════════ -->
+    <section id="stats-bar">
+        <div class="stats-inner">
+            <div class="stat-item">
+                <span class="stat-number" data-count="2847">0</span>
+                <span class="stat-label">Memorials</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="14203">0</span>
+                <span class="stat-label">Candles Lit</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="8915">0</span>
+                <span class="stat-label">Tributes</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="31280">0</span>
+                <span class="stat-label">Flowers Sent</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="52">0</span>
+                <span class="stat-label">Countries</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FEATURED MEMORIAL ═══════════════ -->
+    <section id="featured">
+        <div class="featured-inner">
+            <div class="section-header">
+                <p class="section-label">Spotlight</p>
+                <h2 class="section-title">Featured Memorial</h2>
+            </div>
+            <div id="featured-card" class="featured-card" tabindex="0">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ QUOTE RIBBON ═══════════════ -->
+    <section id="quote-ribbon">
+        <div class="quote-ribbon-inner">
+            <blockquote id="quote-text">"What we once enjoyed and deeply loved we can never lose, for all that we love deeply becomes part of us."</blockquote>
+            <cite id="quote-author">— Helen Keller</cite>
+        </div>
+    </section>
+
+    <!-- ═══════════════ MEMORIALS SECTION ═══════════════ -->
+    <main id="memorials">
+        <div class="section-header">
+            <p class="section-label">In Loving Memory</p>
+            <h2 class="section-title">All Memorials</h2>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="search-input" placeholder="Search by name, story, or tag..." autocomplete="off">
+            </div>
+            <div class="filter-tags">
+                <button class="filter-tag active" data-filter="all">All</button>
+                <button class="filter-tag" data-filter="recent">Recent</button>
+                <button class="filter-tag" data-filter="trending">Trending</button>
+                <button class="filter-tag" data-filter="most-loved">Most Loved</button>
+                <button class="filter-tag" data-filter="bookmarked">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+                    </svg>
+                    Saved
+                </button>
+            </div>
+        </div>
+
+        <!-- Memorial Cards Grid -->
+        <div id="memorials-grid" class="memorials-grid"></div>
+
+        <div class="load-more-container">
+            <button id="load-more-btn" class="btn btn-ghost">
+                <span>Load More Memorials</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <polyline points="6 9 12 15 18 9"/>
+                </svg>
+            </button>
+        </div>
+    </main>
+
+    <!-- ═══════════════ COMMUNITY / RECENT ACTIVITY ═══════════════ -->
+    <section id="activity-feed">
+        <div class="activity-inner">
+            <div class="section-header">
+                <p class="section-label">Community</p>
+                <h2 class="section-title">Recent Activity</h2>
+            </div>
+            <div id="activity-list" class="activity-list">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ ABOUT ═══════════════ -->
+    <section id="about">
+        <div class="about-inner">
+            <div class="about-text">
+                <p class="section-label">Our Purpose</p>
+                <h2 class="section-title">A Place of Peace</h2>
+                <p class="about-desc">The Digital Graveyard was born from a simple belief: that every life deserves to be remembered. In an age where so much is fleeting, we created an eternal sanctuary — a place where memories are preserved with dignity, beauty, and love.</p>
+                <p class="about-desc">Whether you've lost a family member, a friend, a mentor, or a beloved pet, this space is yours. Create a memorial. Share their story. Let the world know they mattered.</p>
+                <div class="about-feature-list">
+                    <div class="about-feature">
+                        <div class="about-feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22">
+                                <path d="M12 22c2 0 3-1.5 3-3.5s-2-4-3-8c-1 4-3 6-3 8s1 3.5 3 3.5z"/><path d="M12 10.5v-2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>Light Candles</h4>
+                            <p>Illuminate their memory with a virtual candle that joins thousands of others.</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <div class="about-feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22">
+                                <path d="M12 22v-7"/><path d="M12 15a4 4 0 0 0 4-4 4 4 0 0 0-4-4 4 4 0 0 0-4 4 4 4 0 0 0 4 4z"/><path d="M12 15c-2.5 0-4 1.5-4 4"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>Send Flowers</h4>
+                            <p>Choose from roses, lilies, sunflowers, and more to honor their life.</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <div class="about-feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>Share Stories</h4>
+                            <p>Leave tributes, share memories, and build a living testament together.</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <div class="about-feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22">
+                                <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>Dedicate a Song</h4>
+                            <p>Attach a song that reminds you of them — a melody for eternity.</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="about-create-btn">
+                    Create a Memorial
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="about-visual">
+                <div class="about-image-grid">
+                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400&h=500&fit=crop" alt="Serene landscape" class="about-img about-img-1" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=300&fit=crop" alt="Peaceful nature" class="about-img about-img-2" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer id="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24">
+                    <path d="M12 2C8 2 5 5 5 9c0 2 1 3.5 2 4.5V22h10v-8.5c1-1 2-2.5 2-4.5 0-4-3-7-7-7z"/>
+                    <path d="M9 22h6" stroke-linecap="round"/>
+                    <path d="M12 6v6M9 9h6" stroke-linecap="round" opacity="0.6"/>
+                </svg>
+                <p class="footer-tagline">"To live in hearts we leave behind is not to die."</p>
+                <p class="footer-attribution">— Thomas Campbell</p>
+            </div>
+            <div class="footer-links-group">
+                <div class="footer-col">
+                    <h4>Navigate</h4>
+                    <a href="#hero">Home</a>
+                    <a href="#featured">Featured</a>
+                    <a href="#memorials">Memorials</a>
+                    <a href="#about">About</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="#">Help Center</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">Grief Resources</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Digital Graveyard. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ═══════════════ MEMORIAL DETAIL MODAL ═══════════════ -->
+    <div id="memorial-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content modal-detail">
+            <button class="modal-close" id="modal-close-btn" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+
+            <!-- Cover Image -->
+            <div class="modal-image-section" id="modal-image-section">
+                <img id="modal-cover-img" src="" alt="" loading="lazy">
+                <div class="modal-image-overlay">
+                    <div class="modal-tags" id="modal-tags"></div>
+                </div>
+            </div>
+
+            <!-- Gallery Thumbnails -->
+            <div class="modal-gallery" id="modal-gallery"></div>
+
+            <div class="modal-body">
+                <!-- Header -->
+                <div class="modal-header-row">
+                    <div>
+                        <h2 class="modal-name" id="modal-name"></h2>
+                        <p class="modal-dates" id="modal-dates"></p>
+                    </div>
+                    <div class="modal-header-actions">
+                        <button class="icon-btn" id="modal-bookmark-btn" title="Save memorial">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+                            </svg>
+                        </button>
+                        <button class="icon-btn" id="modal-share-btn" title="Share memorial">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Epitaph -->
+                <p class="modal-epitaph" id="modal-epitaph"></p>
+
+                <!-- Song Dedication -->
+                <div class="modal-song" id="modal-song-section" style="display:none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
+                        <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                    </svg>
+                    <span id="modal-song-name"></span>
+                </div>
+
+                <div class="modal-divider"></div>
+
+                <!-- Bio / Timeline -->
+                <div class="modal-bio" id="modal-bio"></div>
+
+                <!-- Life Timeline -->
+                <div class="modal-timeline" id="modal-timeline" style="display:none;">
+                    <h3 class="modal-section-title">Life Milestones</h3>
+                    <div class="timeline-list" id="modal-timeline-list"></div>
+                </div>
+
+                <div class="modal-divider"></div>
+
+                <!-- Reactions Row: Candles + Flowers -->
+                <div class="reactions-section">
+                    <h3 class="modal-section-title">Send Your Love</h3>
+                    <div class="reactions-row" id="modal-reactions-row">
+                        <button class="reaction-btn" data-type="candle" title="Light a candle">
+                            <span class="reaction-emoji">🕯</span>
+                            <span class="reaction-label">Candle</span>
+                            <span class="reaction-count" id="reaction-candle">0</span>
+                        </button>
+                        <button class="reaction-btn" data-type="rose" title="Send a rose">
+                            <span class="reaction-emoji">🌹</span>
+                            <span class="reaction-label">Rose</span>
+                            <span class="reaction-count" id="reaction-rose">0</span>
+                        </button>
+                        <button class="reaction-btn" data-type="lily" title="Send a lily">
+                            <span class="reaction-emoji">🌷</span>
+                            <span class="reaction-label">Lily</span>
+                            <span class="reaction-count" id="reaction-lily">0</span>
+                        </button>
+                        <button class="reaction-btn" data-type="sunflower" title="Send a sunflower">
+                            <span class="reaction-emoji">🌻</span>
+                            <span class="reaction-label">Sunflower</span>
+                            <span class="reaction-count" id="reaction-sunflower">0</span>
+                        </button>
+                        <button class="reaction-btn" data-type="bouquet" title="Send a bouquet">
+                            <span class="reaction-emoji">💐</span>
+                            <span class="reaction-label">Bouquet</span>
+                            <span class="reaction-count" id="reaction-bouquet">0</span>
+                        </button>
+                        <button class="reaction-btn" data-type="heart" title="Send love">
+                            <span class="reaction-emoji">❤️</span>
+                            <span class="reaction-label">Love</span>
+                            <span class="reaction-count" id="reaction-heart">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-divider"></div>
+
+                <!-- Tributes -->
+                <div class="modal-tributes-section">
+                    <h3 class="modal-section-title">Tributes <span class="tribute-count-badge" id="modal-tributes-count">0</span></h3>
+                    <div id="modal-tributes-list" class="tributes-list"></div>
+                    <div class="tribute-form">
+                        <input type="text" id="tribute-author-input" placeholder="Your name" class="tribute-author-field">
+                        <textarea id="tribute-input" placeholder="Share a memory or leave a message..." rows="3"></textarea>
+                        <button class="btn btn-primary btn-sm" id="submit-tribute-btn">Leave Tribute</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ CREATE MEMORIAL MODAL ═══════════════ -->
+    <div id="create-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content create-modal-content">
+            <button class="modal-close" id="create-modal-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <h2 class="create-title">Create a Memorial</h2>
+                <p class="create-subtitle">Honor their memory with a lasting tribute in our eternal sanctuary.</p>
+
+                <!-- Step indicator -->
+                <div class="form-steps">
+                    <div class="form-step active" data-step="1"><span>1</span> Basics</div>
+                    <div class="form-step-line"></div>
+                    <div class="form-step" data-step="2"><span>2</span> Story</div>
+                    <div class="form-step-line"></div>
+                    <div class="form-step" data-step="3"><span>3</span> Details</div>
+                </div>
+                <div class="form-progress-bar">
+                    <div class="form-progress-fill" id="form-progress"></div>
+                </div>
+
+                <form id="create-form" class="create-form">
+                    <!-- Step 1: Basics -->
+                    <div class="form-step-panel active" data-panel="1">
+                        <div class="form-group">
+                            <label for="mem-name">Full Name <span class="required">*</span></label>
+                            <input type="text" id="mem-name" placeholder="Their name" required>
+                        </div>
+                        <div class="form-row form-row-2">
+                            <div class="form-group">
+                                <label for="mem-birth">Date of Birth</label>
+                                <input type="date" id="mem-birth">
+                            </div>
+                            <div class="form-group">
+                                <label for="mem-death">Date of Passing</label>
+                                <input type="date" id="mem-death">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="mem-epitaph">Epitaph</label>
+                            <input type="text" id="mem-epitaph" placeholder="A short phrase to remember them by...">
+                        </div>
+                        <button type="button" class="btn btn-primary btn-full step-next-btn" data-next="2">Next: Their Story</button>
+                    </div>
+
+                    <!-- Step 2: Story -->
+                    <div class="form-step-panel" data-panel="2">
+                        <div class="form-group">
+                            <label for="mem-bio">Their Story</label>
+                            <textarea id="mem-bio" rows="6" placeholder="Share their story, what made them special..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="mem-tags">Tags <span class="form-hint">(comma separated)</span></label>
+                            <input type="text" id="mem-tags" placeholder="e.g. Artist, Teacher, Veteran, Mother">
+                        </div>
+                        <div class="form-group">
+                            <label>Life Milestones <span class="form-hint">(optional)</span></label>
+                            <div id="milestone-inputs" class="milestone-inputs">
+                                <div class="milestone-row">
+                                    <input type="text" placeholder="Year" class="milestone-year">
+                                    <input type="text" placeholder="Milestone event" class="milestone-event">
+                                </div>
+                            </div>
+                            <button type="button" class="btn-add-milestone" id="add-milestone-btn">+ Add milestone</button>
+                        </div>
+                        <div class="form-row-buttons">
+                            <button type="button" class="btn btn-secondary step-back-btn" data-back="1">Back</button>
+                            <button type="button" class="btn btn-primary step-next-btn" data-next="3">Next: Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Details -->
+                    <div class="form-step-panel" data-panel="3">
+                        <div class="form-group">
+                            <label for="mem-image">Memorial Image URL</label>
+                            <input type="url" id="mem-image" placeholder="https://example.com/photo.jpg">
+                        </div>
+                        <div class="form-group">
+                            <label for="mem-song">Song Dedication <span class="form-hint">(optional)</span></label>
+                            <input type="text" id="mem-song" placeholder='e.g. "What a Wonderful World" — Louis Armstrong'>
+                        </div>
+                        <div class="form-group">
+                            <label for="mem-location">Location <span class="form-hint">(optional)</span></label>
+                            <input type="text" id="mem-location" placeholder="City, Country">
+                        </div>
+                        <div class="form-row-buttons">
+                            <button type="button" class="btn btn-secondary step-back-btn" data-back="2">Back</button>
+                            <button type="submit" class="btn btn-primary">Create Eternal Memorial</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ BOOKMARKS DRAWER ═══════════════ -->
+    <div id="bookmarks-drawer" class="drawer-overlay" aria-hidden="true">
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h3>Saved Memorials</h3>
+                <button class="modal-close" id="drawer-close-btn" aria-label="Close drawer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="bookmarks-list" class="bookmarks-list">
+                <p class="empty-state">No saved memorials yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ IMAGE LIGHTBOX ═══════════════ -->
+    <div id="lightbox" class="lightbox-overlay" aria-hidden="true">
+        <button class="lightbox-close" id="lightbox-close" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+        <img id="lightbox-img" src="" alt="" loading="lazy">
+    </div>
+
+    <!-- ═══════════════ TOAST ═══════════════ -->
+    <div id="toast" class="toast" aria-live="polite"></div>
+
+    <button id="scroll-top" class="scroll-top-btn" aria-label="Scroll to top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+        </svg>
+    </button>
+
+    <script src="app.js"></script>
+    <script>
+        // Simple script to toggle scroll-to-top button visibility and progress bar logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const scrollTopBtn = document.getElementById('scroll-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Update progress bar
+            const steps = document.querySelectorAll('.form-step');
+            const progressFill = document.getElementById('form-progress');
+            if (progressFill && steps.length > 0) {
+                const observer = new MutationObserver(() => {
+                    let activeIndex = 0;
+                    steps.forEach((step, idx) => {
+                        if (step.classList.contains('active')) {
+                            activeIndex = idx;
+                        }
+                    });
+                    const percent = ((activeIndex + 1) / steps.length) * 100;
+                    progressFill.style.width = \`\${percent}%\`;
+                });
+                steps.forEach(step => observer.observe(step, { attributes: true, attributeFilter: ['class'] }));
+            }
+        });
+    </script>
+</body>
+</html>
