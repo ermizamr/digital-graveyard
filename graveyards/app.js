@@ -168,35 +168,12 @@
         }
     ];
 
-    async function fetchMemorials() {
-        try {
-            const res = await fetch('/api/memorials');
-            if (res.ok) {
-                memorialsData = await res.json();
-                renderFeatured();
-                renderCards(getFilteredData());
-                renderBookmarksDrawer();
-                return;
-            }
-        } catch (e) {
-            console.warn('Failed to fetch from Python API. Falling back to static demo data.', e);
-        }
+    function fetchMemorials() {
+        // Since we are focusing on static hosting and the frontend demo right now,
+        // we directly load the fallback data instead of making a backend fetch call.
+        memorialsData = [...FALLBACK_DATA];
         
         try {
-            // Fallback for Vercel / static hosting
-            memorialsData = [...FALLBACK_DATA];
-            
-            const debugDiv = document.createElement('div');
-            debugDiv.style.background = 'red';
-            debugDiv.style.color = 'white';
-            debugDiv.style.padding = '10px';
-            debugDiv.style.position = 'fixed';
-            debugDiv.style.top = '0';
-            debugDiv.style.left = '0';
-            debugDiv.style.zIndex = '9999';
-            debugDiv.innerText = 'DEBUG: Executing fallback. Data length: ' + memorialsData.length;
-            document.body.appendChild(debugDiv);
-
             renderFeatured();
             renderCards(getFilteredData());
             renderBookmarksDrawer();
@@ -733,20 +710,16 @@
                 const countEl = $(`#reaction-${type}`);
                 
                 try {
-                    const fd = new FormData();
-                    fd.append('type', type);
-                    const res = await fetch(`/api/memorials/${mem.id}/react`, {
-                        method: 'POST',
-                        body: fd
-                    });
-                    if (res.ok) {
-                        const data = await res.json();
-                        if (countEl) countEl.textContent = data.count.toLocaleString();
-                        // Update local object so it stays consistent before next fetch
-                        if (!mem.reactions) mem.reactions = {};
-                        mem.reactions[type] = data.count;
+                    // MOCK STATIC API
+                    setTimeout(() => {
+                        if (countEl) {
+                            const newCount = (mem.reactions[type] || 0) + 1;
+                            countEl.textContent = newCount.toLocaleString();
+                            if (!mem.reactions) mem.reactions = {};
+                            mem.reactions[type] = newCount;
+                        }
                         renderCards(getFilteredData());
-                    }
+                    }, 300);
                 } catch (e) {
                     console.error('Reaction failed', e);
                 } finally {
@@ -794,19 +767,10 @@
                 newSubmit.disabled = true;
                 newSubmit.textContent = '...';
                 
-                const fd = new FormData();
-                fd.append('author', author);
-                fd.append('text', text);
-                if (gift) fd.append('gift', gift);
-                
-                const res = await fetch(`/api/memorials/${mem.id}/tribute`, {
-                    method: 'POST',
-                    body: fd
-                });
-                if (res.ok) {
-                    const data = await res.json();
+                // MOCK STATIC API
+                setTimeout(() => {
                     if (!mem.tributes) mem.tributes = [];
-                    mem.tributes.unshift({ author: data.author, text, time: data.time, gift });
+                    mem.tributes.unshift({ author: author, text, time: 'Just now', gift });
                     textInput.value = '';
                     authorInput.value = '';
                     
@@ -815,7 +779,7 @@
                     if (noneGift) noneGift.checked = true;
 
                     openMemorialModal(mem);
-                }
+                }, 400);
             } catch (e) {
                 console.error(e);
                 showToast('Failed to post tribute', 'error');
@@ -998,22 +962,34 @@
                 submitBtn.textContent = 'Uploading...';
                 submitBtn.disabled = true;
 
-                const res = await fetch('/api/memorials', {
-                    method: 'POST',
-                    body: formData
-                });
-                if (!res.ok) throw new Error('Failed to create memorial');
-                
-                // Refresh data
-                await fetchMemorials();
-                
-                closeModal(createModal);
-                e.target.reset();
-                // Reset milestone inputs
-                const milestoneContainer = $('#milestone-inputs');
-                milestoneContainer.innerHTML = '<div class="milestone-row"><input type="text" placeholder="Year" class="milestone-year"><input type="text" placeholder="Milestone event" class="milestone-event"></div>';
-                showToast('Memorial created', 'success');
-                setTimeout(() => document.getElementById('memorials')?.scrollIntoView({ behavior: 'smooth' }), 300);
+                // MOCK STATIC API
+                setTimeout(() => {
+                    const newMem = {
+                        id: Date.now(),
+                        name,
+                        birth: $('#mem-birth').value || '',
+                        death: $('#mem-death').value || '',
+                        epitaph: $('#mem-epitaph').value || '"Forever in our hearts."',
+                        bio: $('#mem-bio').value || '',
+                        location: $('#mem-location')?.value || '',
+                        tags,
+                        timeline: milestones,
+                        images: ['https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=500&fit=crop&crop=faces'], // Mock photo
+                        reactions: { candle: 0, rose: 0, lily: 0, sunflower: 0, bouquet: 0, heart: 0 },
+                        tributes: []
+                    };
+                    memorialsData.unshift(newMem);
+                    
+                    closeModal(createModal);
+                    e.target.reset();
+                    // Reset milestone inputs
+                    const milestoneContainer = $('#milestone-inputs');
+                    if (milestoneContainer) milestoneContainer.innerHTML = '<div class="milestone-row"><input type="text" placeholder="Year" class="milestone-year"><input type="text" placeholder="Milestone event" class="milestone-event"></div>';
+                    showToast('Memorial created (Demo mode)', 'success');
+                    setTimeout(() => document.getElementById('memorials')?.scrollIntoView({ behavior: 'smooth' }), 300);
+                    
+                    fetchMemorials(); // Re-render the cards
+                }, 600);
             } catch (err) {
                 console.error(err);
                 showToast('Error creating memorial', 'error');
