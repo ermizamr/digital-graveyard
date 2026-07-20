@@ -349,6 +349,11 @@
                 <!-- Bio / Timeline -->
                 <div class="modal-bio" id="modal-bio"></div>
 
+                <div id="modal-media" style="display:none; margin-top: 24px;">
+                    <audio id="modal-audio" controls style="width:100%; margin-bottom: 16px; display:none;"></audio>
+                    <video id="modal-video" controls style="width:100%; border-radius: 8px; display:none;"></video>
+                </div>
+
                 <!-- Life Timeline -->
                 <div class="modal-timeline" id="modal-timeline" style="display:none;">
                     <h3 class="modal-section-title">Life Milestones</h3>
@@ -487,12 +492,16 @@
                     <!-- Step 3: Details -->
                     <div class="form-step-panel" data-panel="3">
                         <div class="form-group">
-                            <label for="mem-image">Memorial Image URL</label>
-                            <input type="url" id="mem-image" placeholder="https://example.com/photo.jpg">
+                            <label for="mem-image">Memorial Photo</label>
+                            <input type="file" id="mem-image" accept="image/*">
                         </div>
                         <div class="form-group">
-                            <label for="mem-song">Song Dedication <span class="form-hint">(optional)</span></label>
-                            <input type="text" id="mem-song" placeholder='e.g. "What a Wonderful World" — Louis Armstrong'>
+                            <label for="mem-audio">Favorite Song / Audio <span class="form-hint">(optional)</span></label>
+                            <input type="file" id="mem-audio" accept="audio/*">
+                        </div>
+                        <div class="form-group">
+                            <label for="mem-video">Favorite Video <span class="form-hint">(optional)</span></label>
+                            <input type="file" id="mem-video" accept="video/*">
                         </div>
                         <div class="form-group">
                             <label for="mem-location">Location <span class="form-hint">(optional)</span></label>
