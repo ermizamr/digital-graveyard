@@ -553,7 +553,7 @@
         </svg>
     </button>
 
-    <script src="/graveyards/app.js"></script>
+    <script src="/graveyards/app.js?v=2"></script>
     <script>
         // Simple script to toggle scroll-to-top button visibility and progress bar logic
         document.addEventListener('DOMContentLoaded', () => {
@@ -581,7 +581,7 @@
                         }
                     });
                     const percent = ((activeIndex + 1) / steps.length) * 100;
-                    progressFill.style.width = \`\${percent}%\`;
+                    progressFill.style.width = `${percent}%`;
                 });
                 steps.forEach(step => observer.observe(step, { attributes: true, attributeFilter: ['class'] }));
             }
