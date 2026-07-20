@@ -216,8 +216,11 @@
 
     // ─── State ───
     let currentFilter = 'all';
-    let bookmarks = new Set(JSON.parse(localStorage.getItem('dg_bookmarks') || '[]'));
-    let userReactions = JSON.parse(localStorage.getItem('dg_reactions') || '{}');
+    let bookmarks = new Set();
+    let userReactions = {};
+    
+    try { bookmarks = new Set(JSON.parse(localStorage.getItem('dg_bookmarks') || '[]')); } catch(e) { console.error(e); }
+    try { userReactions = JSON.parse(localStorage.getItem('dg_reactions') || '{}'); } catch(e) { console.error(e); }
 
     // ─── Helpers ───
     const $ = (sel) => document.querySelector(sel);
