@@ -186,11 +186,29 @@
             console.warn('Failed to fetch from Python API. Falling back to static demo data.', e);
         }
         
-        // Fallback for Vercel / static hosting
-        memorialsData = [...FALLBACK_DATA];
-        renderFeatured();
-        renderCards(getFilteredData());
-        renderBookmarksDrawer();
+        try {
+            // Fallback for Vercel / static hosting
+            memorialsData = [...FALLBACK_DATA];
+            
+            const debugDiv = document.createElement('div');
+            debugDiv.style.background = 'red';
+            debugDiv.style.color = 'white';
+            debugDiv.style.padding = '10px';
+            debugDiv.style.position = 'fixed';
+            debugDiv.style.top = '0';
+            debugDiv.style.left = '0';
+            debugDiv.style.zIndex = '9999';
+            debugDiv.innerText = 'DEBUG: Executing fallback. Data length: ' + memorialsData.length;
+            document.body.appendChild(debugDiv);
+
+            renderFeatured();
+            renderCards(getFilteredData());
+            renderBookmarksDrawer();
+            
+            debugDiv.innerText += ' | Render complete!';
+        } catch(err) {
+            alert('CRITICAL ERROR DURING RENDER: ' + err.message + ' \nStack: ' + err.stack);
+        }
     }
 
     // Quotes rotation
