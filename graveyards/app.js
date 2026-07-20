@@ -6,9 +6,7 @@
     'use strict';
 
     // ─── Rich Memorial Data ───
-    let memorialsData = [];
-
-    const FALLBACK_DATA = [
+    const memorialsData = [
         {
             id: 1,
             name: 'Eleanor Whitmore',
@@ -16,10 +14,14 @@
             death: '2024-11-02',
             epitaph: '"She danced through life with grace and left the world more beautiful."',
             bio: 'Eleanor was a beloved painter, gardener, and grandmother of six. Her watercolors of the English countryside hung in galleries from London to Edinburgh. She believed that beauty was not something you find — it was something you create, one brushstroke at a time. Her laughter could fill a room and her kindness knew no bounds.',
-            images: ["https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=500&fit=crop&crop=faces", "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&h=500&fit=crop"],
-            tags: ["Artist", "Grandmother", "Gardener"],
-            song: "\"La Vie en Rose\" — Édith Piaf",
-            location: "London, England",
+            images: [
+                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=500&fit=crop&crop=faces',
+                'https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=200&h=200&fit=crop&crop=faces',
+                'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop&crop=faces'
+            ],
+            tags: ['Artist', 'Grandmother', 'Gardener'],
+            song: '"La Vie en Rose" — Édith Piaf',
+            location: 'London, England',
             timeline: [
                 { year: '1942', event: 'Born in Cambridge, England' },
                 { year: '1964', event: 'Graduated from the Royal College of Art' },
@@ -27,10 +29,10 @@
                 { year: '1988', event: 'Awarded the Order of the British Empire for contributions to art' },
                 { year: '2024', event: 'Passed peacefully, surrounded by family' }
             ],
-            reactions: { "candle": 342, "rose": 128, "lily": 45, "sunflower": 12, "bouquet": 67, "heart": 201 },
+            reactions: { candle: 342, rose: 128, lily: 45, sunflower: 12, bouquet: 67, heart: 201 },
             tributes: [
-                { "author": "James W.", "text": "Grandma, your garden still blooms every spring. We think of you with every flower.", "gift": "sunflower" },
-                { "author": "Sophie R.", "text": "Your paintings hang in my living room. You taught me to see the world in color.", "gift": "rose" }
+                { author: 'James W.', text: 'Grandma, your garden still blooms every spring. We think of you with every flower.', time: '2 days ago' },
+                { author: 'Sophie R.', text: 'Your paintings hang in my living room. You taught me to see the world in color.', time: '5 days ago' }
             ]
         },
         {
@@ -168,22 +170,6 @@
         }
     ];
 
-    function fetchMemorials() {
-        // Since we are focusing on static hosting and the frontend demo right now,
-        // we directly load the fallback data instead of making a backend fetch call.
-        memorialsData = [...FALLBACK_DATA];
-        
-        try {
-            renderFeatured();
-            renderCards(getFilteredData());
-            renderBookmarksDrawer();
-            
-            debugDiv.innerText += ' | Render complete!';
-        } catch(err) {
-            alert('CRITICAL ERROR DURING RENDER: ' + err.message + ' \nStack: ' + err.stack);
-        }
-    }
-
     // Quotes rotation
     const quotes = [
         { text: '"What we once enjoyed and deeply loved we can never lose, for all that we love deeply becomes part of us."', author: '— Helen Keller' },
@@ -207,11 +193,8 @@
 
     // ─── State ───
     let currentFilter = 'all';
-    let bookmarks = new Set();
-    let userReactions = {};
-    
-    try { bookmarks = new Set(JSON.parse(localStorage.getItem('dg_bookmarks') || '[]')); } catch(e) { console.error(e); }
-    try { userReactions = JSON.parse(localStorage.getItem('dg_reactions') || '{}'); } catch(e) { console.error(e); }
+    let bookmarks = new Set(JSON.parse(localStorage.getItem('dg_bookmarks') || '[]'));
+    let userReactions = JSON.parse(localStorage.getItem('dg_reactions') || '{}');
 
     // ─── Helpers ───
     const $ = (sel) => document.querySelector(sel);
@@ -597,34 +580,6 @@
         $('#modal-epitaph').textContent = mem.epitaph;
         $('#modal-bio').textContent = mem.bio;
 
-        // Media (Audio/Video)
-        const mediaSection = $('#modal-media');
-        const audioEl = $('#modal-audio');
-        const videoEl = $('#modal-video');
-        
-        let hasMedia = false;
-        if (mem.audio_url) {
-            audioEl.src = mem.audio_url;
-            audioEl.style.display = 'block';
-            hasMedia = true;
-        } else {
-            audioEl.style.display = 'none';
-            audioEl.removeAttribute('src');
-        }
-        
-        if (mem.video_url) {
-            videoEl.src = mem.video_url;
-            videoEl.style.display = 'block';
-            hasMedia = true;
-        } else {
-            videoEl.style.display = 'none';
-            videoEl.removeAttribute('src');
-        }
-        
-        if (mediaSection) {
-            mediaSection.style.display = hasMedia ? 'block' : 'none';
-        }
-
         // Song
         const songSection = $('#modal-song-section');
         if (mem.song) {
@@ -691,55 +646,34 @@
         $$('.reaction-btn').forEach(btn => {
             const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
-            newBtn.addEventListener('click', async () => {
+            newBtn.addEventListener('click', () => {
                 if (newBtn.disabled) return;
                 newBtn.disabled = true;
+                setTimeout(() => newBtn.disabled = false, 300);
 
                 const type = newBtn.dataset.type;
                 if (!userReactions[mem.id]) userReactions[mem.id] = {};
                 if (userReactions[mem.id][type]) {
-                    // We don't support removing reactions in this simple API, so just ignore
-                    setTimeout(() => newBtn.disabled = false, 300);
-                    return;
+                    delete userReactions[mem.id][type];
+                    newBtn.classList.remove('active');
+                } else {
+                    userReactions[mem.id][type] = true;
+                    newBtn.classList.add('active');
                 }
-                
-                userReactions[mem.id][type] = true;
-                newBtn.classList.add('active');
                 saveReactions();
-
                 const countEl = $(`#reaction-${type}`);
-                
-                try {
-                    // MOCK STATIC API
-                    setTimeout(() => {
-                        if (countEl) {
-                            const newCount = (mem.reactions[type] || 0) + 1;
-                            countEl.textContent = newCount.toLocaleString();
-                            if (!mem.reactions) mem.reactions = {};
-                            mem.reactions[type] = newCount;
-                        }
-                        renderCards(getFilteredData());
-                    }, 300);
-                } catch (e) {
-                    console.error('Reaction failed', e);
-                } finally {
-                    setTimeout(() => newBtn.disabled = false, 300);
-                }
+                const total = (mem.reactions[type] || 0) + (userReactions[mem.id]?.[type] ? 1 : 0);
+                if (countEl) countEl.textContent = total.toLocaleString();
+                renderCards(getFilteredData());
             });
         });
 
         // Tributes
-        $('#modal-tributes-count').textContent = mem.tributes ? mem.tributes.length : 0;
+        $('#modal-tributes-count').textContent = mem.tributes.length;
         const tributesList = $('#modal-tributes-list');
-        
-        const getGiftEmoji = (g) => {
-            const map = { candle: '🕯️', rose: '🌹', lily: '🌷', sunflower: '🌻', bouquet: '💐' };
-            return map[g] ? `<span class="tribute-gift-icon" style="margin-right:4px;">${map[g]}</span>` : '';
-        };
-
-        tributesList.innerHTML = (mem.tributes || []).map(t => `
+        tributesList.innerHTML = mem.tributes.map(t => `
             <div class="tribute-item">
-                <p class="tribute-author">${t.gift ? getGiftEmoji(t.gift) : ''}${t.author}</p>
+                <p class="tribute-author">${t.author}</p>
                 <p class="tribute-text">${t.text}</p>
                 ${t.time ? `<p class="tribute-time">${t.time}</p>` : ''}
             </div>
@@ -750,43 +684,21 @@
         const newSubmit = submitBtn.cloneNode(true);
         submitBtn.parentNode.replaceChild(newSubmit, submitBtn);
         newSubmit.id = 'submit-tribute-btn';
-        newSubmit.addEventListener('click', async () => {
+        newSubmit.addEventListener('click', () => {
             const textInput = $('#tribute-input');
             const authorInput = $('#tribute-author-input');
-            const giftInput = document.querySelector('input[name="tribute-gift"]:checked');
             const text = textInput.value.trim();
             const author = authorInput.value.trim() || 'Anonymous';
-            const gift = giftInput ? giftInput.value : '';
             if (!text) {
                 textInput.style.borderColor = 'hsl(0,60%,50%)';
                 setTimeout(() => textInput.style.borderColor = '', 1500);
                 return;
             }
-            
-            try {
-                newSubmit.disabled = true;
-                newSubmit.textContent = '...';
-                
-                // MOCK STATIC API
-                setTimeout(() => {
-                    if (!mem.tributes) mem.tributes = [];
-                    mem.tributes.unshift({ author: author, text, time: 'Just now', gift });
-                    textInput.value = '';
-                    authorInput.value = '';
-                    
-                    // Reset gift selector
-                    const noneGift = document.querySelector('input[name="tribute-gift"][value=""]');
-                    if (noneGift) noneGift.checked = true;
-
-                    openMemorialModal(mem);
-                }, 400);
-            } catch (e) {
-                console.error(e);
-                showToast('Failed to post tribute', 'error');
-            } finally {
-                newSubmit.disabled = false;
-                newSubmit.textContent = 'Leave Tribute';
-            }
+            mem.tributes.unshift({ author, text, time: 'Just now' });
+            textInput.value = '';
+            authorInput.value = '';
+            openMemorialModal(mem);
+            showToast('Tribute added', 'success');
         });
 
         memorialModal.classList.add('active');
@@ -916,7 +828,7 @@
         });
 
         // Submit
-        $('#create-form')?.addEventListener('submit', async (e) => {
+        $('#create-form')?.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = $('#mem-name').value.trim();
             if (!name) return;
@@ -932,72 +844,33 @@
             // Gather tags
             const tagsRaw = $('#mem-tags')?.value || '';
             const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
-            
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('birth_date', $('#mem-birth').value || '');
-            formData.append('death_date', $('#mem-death').value || '');
-            formData.append('epitaph', $('#mem-epitaph').value || '"Forever in our hearts."');
-            formData.append('bio', $('#mem-bio').value || '');
-            formData.append('location', $('#mem-location')?.value || '');
-            formData.append('tags', JSON.stringify(tags));
-            formData.append('timeline', JSON.stringify(milestones));
-            
-            const imgFiles = $('#mem-image')?.files;
-            if (imgFiles && imgFiles.length > 0) {
-                for (let i = 0; i < imgFiles.length; i++) {
-                    formData.append('images', imgFiles[i]);
-                }
-            }
-            
-            const audioFile = $('#mem-audio')?.files[0];
-            if (audioFile) formData.append('audio', audioFile);
-            
-            const videoFile = $('#mem-video')?.files[0];
-            if (videoFile) formData.append('video', videoFile);
 
-            try {
-                const submitBtn = e.target.querySelector('button[type="submit"]');
-                const origText = submitBtn.textContent;
-                submitBtn.textContent = 'Uploading...';
-                submitBtn.disabled = true;
+            const newMem = {
+                id: Date.now(),
+                name,
+                birth: $('#mem-birth').value || null,
+                death: $('#mem-death').value || null,
+                epitaph: $('#mem-epitaph').value || '"Forever in our hearts."',
+                bio: $('#mem-bio').value || '',
+                images: $('#mem-image').value ? [$('#mem-image').value] : [],
+                tags,
+                song: $('#mem-song')?.value || null,
+                location: $('#mem-location')?.value || null,
+                timeline: milestones.length ? milestones : null,
+                reactions: { candle: 0, rose: 0, lily: 0, sunflower: 0, bouquet: 0, heart: 0 },
+                tributes: []
+            };
 
-                // MOCK STATIC API
-                setTimeout(() => {
-                    const newMem = {
-                        id: Date.now(),
-                        name,
-                        birth: $('#mem-birth').value || '',
-                        death: $('#mem-death').value || '',
-                        epitaph: $('#mem-epitaph').value || '"Forever in our hearts."',
-                        bio: $('#mem-bio').value || '',
-                        location: $('#mem-location')?.value || '',
-                        tags,
-                        timeline: milestones,
-                        images: ['https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=500&fit=crop&crop=faces'], // Mock photo
-                        reactions: { candle: 0, rose: 0, lily: 0, sunflower: 0, bouquet: 0, heart: 0 },
-                        tributes: []
-                    };
-                    memorialsData.unshift(newMem);
-                    
-                    closeModal(createModal);
-                    e.target.reset();
-                    // Reset milestone inputs
-                    const milestoneContainer = $('#milestone-inputs');
-                    if (milestoneContainer) milestoneContainer.innerHTML = '<div class="milestone-row"><input type="text" placeholder="Year" class="milestone-year"><input type="text" placeholder="Milestone event" class="milestone-event"></div>';
-                    showToast('Memorial created (Demo mode)', 'success');
-                    setTimeout(() => document.getElementById('memorials')?.scrollIntoView({ behavior: 'smooth' }), 300);
-                    
-                    fetchMemorials(); // Re-render the cards
-                }, 600);
-            } catch (err) {
-                console.error(err);
-                showToast('Error creating memorial', 'error');
-            } finally {
-                const submitBtn = e.target.querySelector('button[type="submit"]');
-                submitBtn.textContent = 'Create Eternal Memorial';
-                submitBtn.disabled = false;
-            }
+            memorialsData.unshift(newMem);
+            renderCards(getFilteredData());
+            closeModal(createModal);
+            e.target.reset();
+            // Reset milestone inputs
+            const milestoneContainer = $('#milestone-inputs');
+            milestoneContainer.innerHTML = '<div class="milestone-row"><input type="text" placeholder="Year" class="milestone-year"><input type="text" placeholder="Milestone event" class="milestone-event"></div>';
+            showToast('Memorial created', 'success');
+
+            setTimeout(() => document.getElementById('memorials')?.scrollIntoView({ behavior: 'smooth' }), 300);
         });
     }
 
@@ -1115,10 +988,7 @@
 
         renderFeatured();
         renderActivityFeed();
-        
-        // Fetch data from backend
-        fetchMemorials();
-        
+        renderCards(getFilteredData());
         updateBookmarkBadge();
         handleDeepLink();
         initAutoScroll();

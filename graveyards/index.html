@@ -349,11 +349,6 @@
                 <!-- Bio / Timeline -->
                 <div class="modal-bio" id="modal-bio"></div>
 
-                <div id="modal-media" style="display:none; margin-top: 24px;">
-                    <audio id="modal-audio" controls style="width:100%; margin-bottom: 16px; display:none;"></audio>
-                    <video id="modal-video" controls style="width:100%; border-radius: 8px; display:none;"></video>
-                </div>
-
                 <!-- Life Timeline -->
                 <div class="modal-timeline" id="modal-timeline" style="display:none;">
                     <h3 class="modal-section-title">Life Milestones</h3>
@@ -406,14 +401,6 @@
                     <h3 class="modal-section-title">Tributes <span class="tribute-count-badge" id="modal-tributes-count">0</span></h3>
                     <div id="modal-tributes-list" class="tributes-list"></div>
                     <div class="tribute-form">
-                        <div class="tribute-gift-selector" id="tribute-gift-selector">
-                            <label class="gift-option"><input type="radio" name="tribute-gift" value="" checked> <span>💬 Comment</span></label>
-                            <label class="gift-option"><input type="radio" name="tribute-gift" value="candle"> <span>🕯️ Candle</span></label>
-                            <label class="gift-option"><input type="radio" name="tribute-gift" value="rose"> <span>🌹 Rose</span></label>
-                            <label class="gift-option"><input type="radio" name="tribute-gift" value="lily"> <span>🌷 Lily</span></label>
-                            <label class="gift-option"><input type="radio" name="tribute-gift" value="sunflower"> <span>🌻 Sunflower</span></label>
-                            <label class="gift-option"><input type="radio" name="tribute-gift" value="bouquet"> <span>💐 Bouquet</span></label>
-                        </div>
                         <input type="text" id="tribute-author-input" placeholder="Your name" class="tribute-author-field">
                         <textarea id="tribute-input" placeholder="Share a memory or leave a message..." rows="3"></textarea>
                         <button class="btn btn-primary btn-sm" id="submit-tribute-btn">Leave Tribute</button>
@@ -500,17 +487,12 @@
                     <!-- Step 3: Details -->
                     <div class="form-step-panel" data-panel="3">
                         <div class="form-group">
-                            <label for="mem-image">Memorial Photos</label>
-                            <input type="file" id="mem-image" accept="image/*" multiple>
-                            <small class="form-hint">Hold Ctrl or Cmd to select multiple photos.</small>
+                            <label for="mem-image">Memorial Image URL</label>
+                            <input type="url" id="mem-image" placeholder="https://example.com/photo.jpg">
                         </div>
                         <div class="form-group">
-                            <label for="mem-audio">Favorite Song / Audio <span class="form-hint">(optional)</span></label>
-                            <input type="file" id="mem-audio" accept="audio/*">
-                        </div>
-                        <div class="form-group">
-                            <label for="mem-video">Favorite Video <span class="form-hint">(optional)</span></label>
-                            <input type="file" id="mem-video" accept="video/*">
+                            <label for="mem-song">Song Dedication <span class="form-hint">(optional)</span></label>
+                            <input type="text" id="mem-song" placeholder='e.g. "What a Wonderful World" — Louis Armstrong'>
                         </div>
                         <div class="form-group">
                             <label for="mem-location">Location <span class="form-hint">(optional)</span></label>
@@ -562,7 +544,7 @@
         </svg>
     </button>
 
-    <script src="/graveyards/app.js?v=3"></script>
+    <script src="/graveyards/app.js"></script>
     <script>
         // Simple script to toggle scroll-to-top button visibility and progress bar logic
         document.addEventListener('DOMContentLoaded', () => {
@@ -590,7 +572,7 @@
                         }
                     });
                     const percent = ((activeIndex + 1) / steps.length) * 100;
-                    progressFill.style.width = `${percent}%`;
+                    progressFill.style.width = \`\${percent}%\`;
                 });
                 steps.forEach(step => observer.observe(step, { attributes: true, attributeFilter: ['class'] }));
             }
