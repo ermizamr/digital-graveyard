@@ -54,6 +54,8 @@ body {
     background-attachment: fixed;
     line-height:1.6; 
     overflow-x:hidden; 
+    overflow-wrap: break-word;
+    word-wrap: break-word;
     min-height:100vh; 
 }
 ::selection { background:var(--amber); color:white; }
@@ -520,7 +522,12 @@ input, textarea { font-family:inherit; }
 
 @media (max-width: 768px) {
     :root {
-        --space-3xl: 4rem; --space-4xl: 5rem;
+        --space-md: 0.875rem;
+        --space-lg: 1.25rem;
+        --space-xl: 1.5rem;
+        --space-2xl: 2rem;
+        --space-3xl: 3rem; 
+        --space-4xl: 4rem;
     }
 
     #main-nav { padding: 10px var(--space-md); width: 95%; top: 10px; }
