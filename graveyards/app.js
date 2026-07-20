@@ -16,14 +16,10 @@
             death: '2024-11-02',
             epitaph: '"She danced through life with grace and left the world more beautiful."',
             bio: 'Eleanor was a beloved painter, gardener, and grandmother of six. Her watercolors of the English countryside hung in galleries from London to Edinburgh. She believed that beauty was not something you find — it was something you create, one brushstroke at a time. Her laughter could fill a room and her kindness knew no bounds.',
-            images: [
-                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=500&fit=crop&crop=faces',
-                'https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=200&h=200&fit=crop&crop=faces',
-                'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop&crop=faces'
-            ],
-            tags: ['Artist', 'Grandmother', 'Gardener'],
-            song: '"La Vie en Rose" — Édith Piaf',
-            location: 'London, England',
+            images: ["https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=500&fit=crop&crop=faces", "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&h=500&fit=crop"],
+            tags: ["Artist", "Grandmother", "Gardener"],
+            song: "\"La Vie en Rose\" — Édith Piaf",
+            location: "London, England",
             timeline: [
                 { year: '1942', event: 'Born in Cambridge, England' },
                 { year: '1964', event: 'Graduated from the Royal College of Art' },
@@ -31,10 +27,10 @@
                 { year: '1988', event: 'Awarded the Order of the British Empire for contributions to art' },
                 { year: '2024', event: 'Passed peacefully, surrounded by family' }
             ],
-            reactions: { candle: 342, rose: 128, lily: 45, sunflower: 12, bouquet: 67, heart: 201 },
+            reactions: { "candle": 342, "rose": 128, "lily": 45, "sunflower": 12, "bouquet": 67, "heart": 201 },
             tributes: [
-                { author: 'James W.', text: 'Grandma, your garden still blooms every spring. We think of you with every flower.', time: '2 days ago' },
-                { author: 'Sophie R.', text: 'Your paintings hang in my living room. You taught me to see the world in color.', time: '5 days ago' }
+                { "author": "James W.", "text": "Grandma, your garden still blooms every spring. We think of you with every flower.", "gift": "sunflower" },
+                { "author": "Sophie R.", "text": "Your paintings hang in my living room. You taught me to see the world in color.", "gift": "rose" }
             ]
         },
         {
@@ -762,9 +758,15 @@
         // Tributes
         $('#modal-tributes-count').textContent = mem.tributes ? mem.tributes.length : 0;
         const tributesList = $('#modal-tributes-list');
+        
+        const getGiftEmoji = (g) => {
+            const map = { candle: '🕯️', rose: '🌹', lily: '🌷', sunflower: '🌻', bouquet: '💐' };
+            return map[g] ? `<span class="tribute-gift-icon" style="margin-right:4px;">${map[g]}</span>` : '';
+        };
+
         tributesList.innerHTML = (mem.tributes || []).map(t => `
             <div class="tribute-item">
-                <p class="tribute-author">${t.author}</p>
+                <p class="tribute-author">${t.gift ? getGiftEmoji(t.gift) : ''}${t.author}</p>
                 <p class="tribute-text">${t.text}</p>
                 ${t.time ? `<p class="tribute-time">${t.time}</p>` : ''}
             </div>
@@ -778,8 +780,10 @@
         newSubmit.addEventListener('click', async () => {
             const textInput = $('#tribute-input');
             const authorInput = $('#tribute-author-input');
+            const giftInput = document.querySelector('input[name="tribute-gift"]:checked');
             const text = textInput.value.trim();
             const author = authorInput.value.trim() || 'Anonymous';
+            const gift = giftInput ? giftInput.value : '';
             if (!text) {
                 textInput.style.borderColor = 'hsl(0,60%,50%)';
                 setTimeout(() => textInput.style.borderColor = '', 1500);
@@ -793,6 +797,7 @@
                 const fd = new FormData();
                 fd.append('author', author);
                 fd.append('text', text);
+                if (gift) fd.append('gift', gift);
                 
                 const res = await fetch(`/api/memorials/${mem.id}/tribute`, {
                     method: 'POST',
@@ -801,9 +806,14 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (!mem.tributes) mem.tributes = [];
-                    mem.tributes.unshift({ author: data.author, text, time: data.time });
+                    mem.tributes.unshift({ author: data.author, text, time: data.time, gift });
                     textInput.value = '';
                     authorInput.value = '';
+                    
+                    // Reset gift selector
+                    const noneGift = document.querySelector('input[name="tribute-gift"][value=""]');
+                    if (noneGift) noneGift.checked = true;
+
                     openMemorialModal(mem);
                 }
             } catch (e) {
@@ -969,8 +979,12 @@
             formData.append('tags', JSON.stringify(tags));
             formData.append('timeline', JSON.stringify(milestones));
             
-            const imgFile = $('#mem-image')?.files[0];
-            if (imgFile) formData.append('image', imgFile);
+            const imgFiles = $('#mem-image')?.files;
+            if (imgFiles && imgFiles.length > 0) {
+                for (let i = 0; i < imgFiles.length; i++) {
+                    formData.append('images', imgFiles[i]);
+                }
+            }
             
             const audioFile = $('#mem-audio')?.files[0];
             if (audioFile) formData.append('audio', audioFile);

@@ -55,12 +55,17 @@ def get_memorials(db: Session = Depends(get_db)):
         except:
             tags = []
             
+        try:
+            images_data = json.loads(m.images)
+        except:
+            images_data = []
+            
         images = []
-        if m.image_path:
-            if m.image_path.startswith("http"):
-                images.append(m.image_path)
+        for img_path in images_data:
+            if img_path.startswith("http"):
+                images.append(img_path)
             else:
-                images.append(f"/uploads/{m.image_path}")
+                images.append(f"/uploads/{img_path}")
             
         result.append({
             "id": m.id,
@@ -77,7 +82,7 @@ def get_memorials(db: Session = Depends(get_db)):
             "video_url": f"/uploads/{m.video_path}" if m.video_path else None,
             "timeline": [{"year": t.year, "event": t.event} for t in timelines],
             "reactions": reactions,
-            "tributes": [{"author": t.author, "text": t.text, "time": t.created_at.strftime("%B %d, %Y")} for t in tributes]
+            "tributes": [{"author": t.author, "text": t.text, "time": t.created_at.strftime("%B %d, %Y"), "gift": t.gift} for t in tributes]
         })
     return result
 
@@ -90,17 +95,20 @@ async def create_memorial(
     bio: str = Form(...),
     tags: str = Form("[]"),
     timeline: str = Form("[]"),
-    image: UploadFile = File(None),
+    images: List[UploadFile] = File([]),
     audio: UploadFile = File(None),
     video: UploadFile = File(None),
     db: Session = Depends(get_db)
 ):
     # Save files if uploaded
-    image_path = None
-    if image and image.filename:
-        image_path = f"img_{image.filename}"
-        with open(os.path.join(UPLOAD_DIR, image_path), "wb") as buffer:
-            shutil.copyfileobj(image.file, buffer)
+    image_paths = []
+    if images:
+        for image in images:
+            if image and image.filename:
+                image_path = f"img_{image.filename}"
+                with open(os.path.join(UPLOAD_DIR, image_path), "wb") as buffer:
+                    shutil.copyfileobj(image.file, buffer)
+                image_paths.append(image_path)
             
     audio_path = None
     if audio and audio.filename:
@@ -121,7 +129,7 @@ async def create_memorial(
         epitaph=epitaph,
         bio=bio,
         tags=tags,
-        image_path=image_path,
+        images=json.dumps(image_paths),
         audio_path=audio_path,
         video_path=video_path
     )
@@ -163,8 +171,8 @@ def react_memorial(memorial_id: int, type: str = Form(...), db: Session = Depend
     return {"message": "Reaction added", "count": reaction.count}
 
 @app.post("/api/memorials/{memorial_id}/tribute")
-def post_tribute(memorial_id: int, author: str = Form(...), text: str = Form(...), db: Session = Depends(get_db)):
-    tribute = models.Tribute(memorial_id=memorial_id, author=author, text=text)
+def post_tribute(memorial_id: int, author: str = Form(...), text: str = Form(...), gift: str = Form(None), db: Session = Depends(get_db)):
+    tribute = models.Tribute(memorial_id=memorial_id, author=author, text=text, gift=gift)
     db.add(tribute)
     db.commit()
     db.refresh(tribute)
@@ -323,7 +331,7 @@ def seed_data():
                 death_date=data["death_date"],
                 epitaph=data["epitaph"],
                 bio=data["bio"],
-                image_path=data["image_path"],
+                images=json.dumps([data["image_path"]]),
                 song=data.get("song"),
                 location=data.get("location"),
                 tags=json.dumps(data.get("tags", []))

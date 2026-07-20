@@ -20,7 +20,7 @@ class Memorial(Base):
     tags = Column(String, default="[]") 
     
     # Media paths
-    image_path = Column(String, nullable=True)
+    images = Column(String, default="[]")
     audio_path = Column(String, nullable=True)
     video_path = Column(String, nullable=True)
     
@@ -55,6 +55,7 @@ class Tribute(Base):
     memorial_id = Column(Integer, ForeignKey("memorials.id"))
     author = Column(String)
     text = Column(Text)
+    gift = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     
     memorial = relationship("Memorial", back_populates="tributes")
