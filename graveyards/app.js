@@ -177,7 +177,9 @@
             const res = await fetch('/api/memorials');
             if (res.ok) {
                 memorialsData = await res.json();
+                renderFeatured();
                 renderCards(getFilteredData());
+                renderBookmarksDrawer();
                 return;
             }
         } catch (e) {
@@ -186,7 +188,9 @@
         
         // Fallback for Vercel / static hosting
         memorialsData = [...FALLBACK_DATA];
+        renderFeatured();
         renderCards(getFilteredData());
+        renderBookmarksDrawer();
     }
 
     // Quotes rotation
